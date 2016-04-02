@@ -28,7 +28,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
     frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
-    frameworks/native/data/etc/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml \
     frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:system/etc/permissions/android.hardware.opengles.aep.xml \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
@@ -112,11 +111,6 @@ PRODUCT_PACKAGES += \
     libtinyxml \
     memtrack.msm8916
 
-# Filesystem
-PRODUCT_PACKAGES += \
-    e2fsck \
-    make_ext4fs
-
 # Keystore
 PRODUCT_PACKAGES += \
     keystore.msm8916
@@ -167,7 +161,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libcnefeatureconfig \
     librmnetctl \
-    libshim_parcel \
     libxml2
 
 # Sensors
