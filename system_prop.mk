@@ -37,10 +37,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
-    rild.libpath=/vendor/lib64/libril-qc-qmi-1.so \
     ro.telephony.call_ring.multiple=false \
     ro.telephony.default_network=9,9 \
-    ro.telephony.ril.config=simactivation \
+    ro.telephony.ril.config=simactivation,sim2gsmonly \
     persist.radio.force_on_dc=true \
     persist.radio.apm_sim_not_pwdn=1 \
     persist.radio.sib16_support=1 \
@@ -55,7 +54,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.extension_library=libqti-perfd-client.so
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.frp.pst=/dev/block/bootdevice/by-name/config \
     drm.service.enabled=true
 
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -63,3 +61,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.loc.nlp_name=com.qualcomm.location \
     ro.gps.agps_provider=1 \
     ro.pip.gated=0
+
+# Disable QMI logspam
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.data.qmi.adb_logmask=0
