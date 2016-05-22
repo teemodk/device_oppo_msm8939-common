@@ -65,14 +65,6 @@ AccelSensor::AccelSensor()
 		strlcat(input_sysfs_path, input_name, sizeof(input_sysfs_path));
 		strlcat(input_sysfs_path, SYSFS_I2C_SLAVE_PATH, sizeof(input_sysfs_path));
 		input_sysfs_path_len = strlen(input_sysfs_path);
-#ifdef TARGET_8610
-		if (access(input_sysfs_path, F_OK)) {
-			input_sysfs_path_len -= strlen(SYSFS_I2C_SLAVE_PATH);
-			strlcpy(&input_sysfs_path[input_sysfs_path_len],
-					SYSFS_INPUT_DEV_PATH, SYSFS_MAXLEN);
-			input_sysfs_path_len += strlen(SYSFS_INPUT_DEV_PATH);
-		}
-#endif
 		enable(0, 1);
 	}
 }
@@ -148,6 +140,7 @@ int AccelSensor::enable(int32_t, int en) {
 			if (flags) {
 				buf[0] = '1';
 				mEnabledTime = getTimestamp() + IGNORE_EVENT_TIME;
+				sysclk_sync_offset = getClkOffset();
 			} else {
 				buf[0] = '0';
 			}
@@ -248,11 +241,10 @@ again:
 						if(mUseAbsTimeStamp != true) {
 							mPendingEvent.timestamp = timevalToNano(event->time);
 						}
+						mPendingEvent.timestamp -= sysclk_sync_offset;
 						if (mEnabled) {
-							if(mPendingEvent.timestamp >= mEnabledTime) {
-								*data++ = mPendingEvent;
-								numEventReceived++;
-							}
+							*data++ = mPendingEvent;
+							numEventReceived++;
 							count--;
 						}
 					}
