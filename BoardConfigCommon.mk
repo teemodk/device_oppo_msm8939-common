@@ -60,7 +60,7 @@ ENABLE_CPUSETS := true
 
 # Kernel
 BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1
+BOARD_KERNEL_CMDLINE := console=none androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
 BOARD_MKBOOTIMG_ARGS := --tags_offset 0x00000100
@@ -76,10 +76,14 @@ endif
 # Include path
 TARGET_SPECIFIC_HEADER_PATH := $(COMMON_PATH)/include
 
+# ANT+
+BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
+
 # Audio
 BOARD_USES_ALSA_AUDIO := true
 AUDIO_FEATURE_ENABLED_FLUENCE := true
 AUDIO_FEATURE_ENABLED_KPI_OPTIMIZE := true
+AUDIO_FEATURE_ENABLED_NEW_SAMPLE_RATE := true
 USE_CUSTOM_AUDIO_POLICY := 1
 
 # Bluetooth
