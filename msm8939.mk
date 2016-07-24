@@ -102,6 +102,16 @@ PRODUCT_PACKAGES += \
     libtinyxml \
     memtrack.msm8916
 
+# GPS
+PRODUCT_PACKAGES += \
+    gps.msm8916
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/gps/flp.conf:system/etc/flp.conf \
+    $(LOCAL_PATH)/gps/gps.conf:system/etc/gps.conf \
+    $(LOCAL_PATH)/gps/izat.conf:system/etc/izat.conf \
+    $(LOCAL_PATH)/gps/sap.conf:system/etc/sap.conf
+
 # IRQ balance
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/msm_irqbalance.conf:system/vendor/etc/msm_irqbalance.conf
@@ -183,6 +193,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_cfg.ini:system/etc/wifi/WCNSS_qcom_cfg.ini
+
+# Call the proprietary setup
+$(call inherit-product-if-exists, vendor/oppo/msm8939-common/msm8939-common-vendor.mk)
 
 # Inherit from oppo-common
 $(call inherit-product, device/oppo/common/common.mk)
