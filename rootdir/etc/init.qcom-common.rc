@@ -29,6 +29,9 @@ import init.qcom.power.rc
 import init.qcom.usb.rc
 
 on early-init
+    mount debugfs debugfs /sys/kernel/debug
+    chmod 0755 /sys/kernel/debug
+
     mkdir /firmware 0771 system system
     mkdir /system 0777 root root
     symlink /data/tombstones /tombstones
@@ -41,7 +44,7 @@ on init
     symlink /sdcard /mnt/sdcard
     symlink /sdcard /storage/sdcard0
 
-    export LD_SHIM_LIBS "/system/bin/mm-qcamera-daemon|libshim_camera.so:/system/vendor/lib/libmmqjpeg_codec.so|libboringssl-compat.so"
+    export LD_SHIM_LIBS "/system/bin/mm-qcamera-daemon|libshim_camera.so:/system/lib/hw/camera.vendor.msm8916.so|libshim_camera.so:/system/vendor/lib/libmmqjpeg_codec.so|libboringssl-compat.so"
 
 on fs
     mount_all fstab.qcom
@@ -278,9 +281,6 @@ on post-fs-data
     chown system graphics /sys/class/graphics/fb0/modes
     chmod 0664 /sys/class/graphics/fb0/modes
 
-on property:init.svc.wpa_supplicant=stopped
-    stop dhcpcd
-
 on property:bluetooth.isEnabled=true
     write /sys/class/bluetooth/hci0/idle_timeout 7000
 
@@ -300,6 +300,7 @@ service rmt_storage /system/bin/rmt_storage
     class core
     user root
     disabled
+    writepid /dev/cpuset/system-background/tasks
 
 on property:ro.boot.emmc=true
     start rmt_storage
@@ -342,9 +343,11 @@ service qmuxd /system/bin/qmuxd
     class main
     user root
     group radio audio bluetooth gps qcom_diag
+    writepid /dev/cpuset/system-background/tasks
 
 service netmgrd /system/bin/netmgrd
     class main
+    writepid /dev/cpuset/system-background/tasks
 
 on property:ro.use_data_netmgrd=false
     # netmgr not supported on specific target
@@ -384,66 +387,6 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     disabled
     oneshot
 
-service dhcpcd_wlan0 /system/bin/dhcpcd -ABKLG
-    class late_start
-    disabled
-    oneshot
-
-service dhcpcd_p2p /system/bin/dhcpcd -ABKLG
-    class late_start
-    disabled
-    oneshot
-
-service iprenew_wlan0 /system/bin/dhcpcd -n
-    class late_start
-    disabled
-    oneshot
-
-service iprenew_p2p /system/bin/dhcpcd -n
-    class late_start
-    disabled
-    oneshot
-
-service dhcpcd_bt-pan /system/bin/dhcpcd -BKLG
-    class late_start
-    disabled
-    oneshot
-
-service iprenew_bt-pan /system/bin/dhcpcd -n
-    class late_start
-    disabled
-    oneshot
-
-service dhcpcd_bnep0 /system/bin/dhcpcd -BKLG
-    disabled
-    oneshot
-
-service dhcpcd_bnep1 /system/bin/dhcpcd -BKLG
-    disabled
-    oneshot
-
-service dhcpcd_bnep2 /system/bin/dhcpcd -BKLG
-    disabled
-    oneshot
-
-service dhcpcd_bnep3 /system/bin/dhcpcd -BKLG
-    disabled
-    oneshot
-
-service dhcpcd_bnep4 /system/bin/dhcpcd -BKLG
-    disabled
-    oneshot
-
-service dhcpcd_eth0 /system/bin/dhcpcd -aABDKL
-    class late_start
-    disabled
-    oneshot
-
-service iprenew_eth0 /system/bin/dhcpcd -n
-    class late_start
-    disabled
-    oneshot
-
 service loc_launcher /system/bin/loc_launcher
     #loc_launcher will start as root and set its uid to gps
     class late_start
@@ -465,7 +408,7 @@ service qcamerasvr /system/bin/mm-qcamera-daemon
     class late_start
     user camera
     group camera system inet input graphics
-    writepid /dev/cpuset/system-background/tasks
+    writepid /dev/cpuset/camera-daemon/tasks
 
     # Allow usb charging to be disabled peristently
 on property:persist.usb.chgdisabled=1
@@ -486,6 +429,7 @@ service qseecomd /system/bin/qseecomd
     class core
     user root
     group root
+    writepid /dev/cpuset/system-background/tasks
 
 service perfd /system/vendor/bin/perfd
     class main
@@ -500,11 +444,13 @@ service thermal-engine /system/vendor/bin/thermal-engine
     socket thermal-recv-client stream 0660 system system
     socket thermal-recv-passive-client stream 0666 system system
     group root
+    writepid /dev/cpuset/system-background/tasks
 
 service time_daemon /system/bin/time_daemon
     class late_start
     user root
     group root
+    writepid /dev/cpuset/system-background/tasks
 
 service audiod /system/bin/audiod
     class late_start

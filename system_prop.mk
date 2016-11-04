@@ -4,6 +4,7 @@
 
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
+    qcom.bluetooth.soc=smd \
     ro.bluetooth.hfp.ver=1.7 \
     ro.qualcomm.bt.hci_transport=smd
 
@@ -76,12 +77,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     drm.service.enabled=true
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.gps.qc_nlp_in_use=1 \
-    persist.loc.nlp_name=com.qualcomm.location \
-    ro.gps.agps_provider=1 \
-    ro.pip.gated=0
 
 # Disable QMI logspam
 PRODUCT_PROPERTY_OVERRIDES += \
