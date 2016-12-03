@@ -2,6 +2,23 @@
 # System Properties for Oppo MSM8939
 #
 
+# Bluetooth
+PRODUCT_PROPERTY_OVERRIDES += \
+    qcom.bluetooth.soc=smd \
+    ro.bluetooth.hfp.ver=1.7 \
+    ro.qualcomm.bt.hci_transport=smd
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.bluetooth.dun=true \
+    ro.bluetooth.sap=true \
+    ro.qualcomm.bluetooth.ftp=true \
+    ro.qualcomm.bluetooth.hfp=true \
+    ro.qualcomm.bluetooth.hsp=true \
+    ro.qualcomm.bluetooth.map=true \
+    ro.qualcomm.bluetooth.nap=true \
+    ro.qualcomm.bluetooth.opp=true \
+    ro.qualcomm.bluetooth.pbap=true
+
 # Display
 #
 # OpenGLES:
@@ -18,7 +35,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.qc.sdk.audio.ssr=false \
     ro.qc.sdk.audio.fluencetype=fluence \
     persist.audio.fluence.voicecall=true \
-    persist.audio.fluence.voicerec=false \
+    persist.audio.fluence.voicerec=true \
     persist.audio.fluence.speaker=false \
     tunnel.audio.encode=false \
     audio.deep_buffer.media=true \
@@ -33,18 +50,24 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
+    media.stagefright.legacyencoder=true \
+    media.stagefright.less-secure=true \
     persist.camera.cpp.duplication=false
+
+# Reduce client buffer size for fast audio output tracks
+PRODUCT_PROPERTY_OVERRIDES += \
+    af.fast_track_multiplier=1
+
+# Low latency audio buffer size in frames
+PRODUCT_PROPERTY_OVERRIDES += \
+    audio_hal.period_size=192
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
-    rild.libpath=/vendor/lib64/libril-qc-qmi-1.so \
     ro.telephony.call_ring.multiple=false \
-    ro.telephony.default_network=9,9 \
-    ro.telephony.ril.config=simactivation \
     persist.radio.force_on_dc=true \
     persist.radio.apm_sim_not_pwdn=1 \
-    persist.radio.sib16_support=1 \
-    persist.radio.multisim.config=dsds
+    persist.radio.sib16_support=1
 
 # WIFI
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -55,11 +78,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.extension_library=libqti-perfd-client.so
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.frp.pst=/dev/block/bootdevice/by-name/config \
     drm.service.enabled=true
 
+# Disable QMI logspam
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.gps.qc_nlp_in_use=1 \
-    persist.loc.nlp_name=com.qualcomm.location \
-    ro.gps.agps_provider=1 \
-    ro.pip.gated=0
+    persist.data.qmi.adb_logmask=0

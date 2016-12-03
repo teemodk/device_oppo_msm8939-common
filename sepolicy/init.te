@@ -1,2 +1,2 @@
 # allow logcat
-allow init kernel:system syslog_read;
+# allow init kernel:system syslog_read;
