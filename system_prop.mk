@@ -10,14 +10,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.bluetooth.dun=true \
-    ro.bluetooth.sap=true \
-    ro.qualcomm.bluetooth.ftp=true \
-    ro.qualcomm.bluetooth.hfp=true \
-    ro.qualcomm.bluetooth.hsp=true \
-    ro.qualcomm.bluetooth.map=true \
-    ro.qualcomm.bluetooth.nap=true \
-    ro.qualcomm.bluetooth.opp=true \
-    ro.qualcomm.bluetooth.pbap=true
+    ro.bluetooth.sap=true
 
 # Display
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -72,7 +65,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # QC vendor extension
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vendor.extension_library=libqti-perfd-client.so
+    ro.vendor.extension_library=libqti-perfd-client.so \
+    ro.core_ctl_min_cpu=0 \
+    ro.core_ctl_max_cpu=4
 
 PRODUCT_PROPERTY_OVERRIDES += \
     drm.service.enabled=true
